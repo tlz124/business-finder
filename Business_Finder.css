@@ -28,10 +28,10 @@
     --red:           #ff3355;
     --yellow:        #ffd700;
 
-    --text-white:    #ffffff;
-    --text-light:    #e8e2f8;
-    --text-mid:      #b8b0d8;
-    --text-dim:      #6a6485;
+    --text-white:    #f0ecff;
+    --text-light:    #c8c0e0;
+    --text-mid:      #9a92b8;
+    --text-dim:      #5a5475;
 
     --glow-sm:  0 0 8px rgba(139, 0, 255, 0.5);
     --glow-md:  0 0 15px rgba(139, 0, 255, 0.6), 0 0 30px rgba(139, 0, 255, 0.3);
