@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lead Finder — Flecha Web Design</title>
+    <link rel="stylesheet" href="Business_Finder.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Animated grid background -->
+    <canvas id="gridCanvas"></canvas>
+
+    <!-- Header -->
+    <header class="site-header">
+        <a href="index.html" class="logo-link">
+            <img src="flecha-web-design-logo.png" alt="Flecha" class="logo-img">
+            <div class="logo-text">
+                <span class="logo-main">FLECHA</span>
+                <span class="logo-sub">WEB DESIGN</span>
+            </div>
+            <img src="flecha-web-design-logo.png" alt="" class="logo-img logo-img-right">
+        </a>
+        <div class="header-title">
+            <span class="header-label">// TOOL</span>
+            <span class="header-name">LEAD FINDER</span>
+        </div>
+    </header>
+
+    <!-- Main App -->
+    <main class="app-shell">
+
+        <!-- API Key Panel -->
+        <section class="panel api-panel" id="apiPanel">
+            <div class="panel-header">
+                <span class="panel-icon"><i class="fa-solid fa-key"></i></span>
+                <h2 class="panel-title">API CONFIGURATION</h2>
+                <span class="panel-status" id="apiStatus">DISCONNECTED</span>
+            </div>
+            <div class="panel-body">
+                <p class="panel-desc">Enter your Google Places API key to begin scanning. Your key stays in this browser session only and is never stored or transmitted elsewhere.</p>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label class="input-label">GOOGLE PLACES API KEY</label>
+                        <div class="input-with-icon">
+                            <input type="password" id="apiKeyInput" class="cyber-input" placeholder="AIza...">
+                            <button class="icon-btn" id="toggleApiKey" title="Show/Hide Key">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button class="cyber-btn primary" id="connectBtn">
+                        <span>CONNECT</span>
+                        <i class="fa-solid fa-plug"></i>
+                    </button>
+                </div>
+                <div class="api-note">
+                    <i class="fa-solid fa-circle-info"></i>
+                    Don't have a key? <a href="https://developers.google.com/maps/documentation/places/web-service/get-api-key" target="_blank" class="cyber-link">Get one from Google Cloud Console →</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Search Panel -->
+        <section class="panel search-panel" id="searchPanel">
+            <div class="panel-header">
+                <span class="panel-icon"><i class="fa-solid fa-radar"></i></span>
+                <h2 class="panel-title">TARGET SCAN</h2>
+                <div class="scan-indicator" id="scanIndicator">
+                    <span class="dot"></span>
+                    <span>IDLE</span>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="search-grid">
+                    <div class="input-group">
+                        <label class="input-label">BUSINESS TYPE</label>
+                        <input type="text" id="businessType" class="cyber-input" placeholder="e.g. dentist, restaurant, plumber...">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">LOCATION</label>
+                        <input type="text" id="locationInput" class="cyber-input" value="Gilbert, AZ">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">RADIUS (miles)</label>
+                        <select id="radiusSelect" class="cyber-input cyber-select">
+                            <option value="1609">1 mile</option>
+                            <option value="8047" selected>5 miles</option>
+                            <option value="16093">10 miles</option>
+                            <option value="24140">15 miles</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">MAX RESULTS</label>
+                        <select id="maxResults" class="cyber-input cyber-select">
+                            <option value="10">10</option>
+                            <option value="20" selected>20</option>
+                            <option value="60">60</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="filter-row">
+                    <span class="filter-label">PRIORITY FILTERS:</span>
+                    <label class="cyber-checkbox">
+                        <input type="checkbox" id="filterNoWebsite" checked>
+                        <span class="checkmark"></span>
+                        No Website
+                    </label>
+                    <label class="cyber-checkbox">
+                        <input type="checkbox" id="filterLowRating" checked>
+                        <span class="checkmark"></span>
+                        Low Review Count (&lt;10)
+                    </label>
+                    <label class="cyber-checkbox">
+                        <input type="checkbox" id="filterNoPhone">
+                        <span class="checkmark"></span>
+                        Missing Contact Info
+                    </label>
+                </div>
+
+                <div class="btn-row">
+                    <button class="cyber-btn primary large" id="scanBtn" disabled>
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <span>INITIATE SCAN</span>
+                    </button>
+                    <button class="cyber-btn ghost" id="demoBtn">
+                        <i class="fa-solid fa-flask"></i>
+                        <span>DEMO MODE</span>
+                    </button>
+                    <button class="cyber-btn ghost" id="clearBtn">
+                        <i class="fa-solid fa-trash-can"></i>
+                        <span>CLEAR</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Panel -->
+        <section class="panel results-panel" id="resultsPanel">
+            <div class="panel-header">
+                <span class="panel-icon"><i class="fa-solid fa-table-list"></i></span>
+                <h2 class="panel-title">SCAN RESULTS</h2>
+                <div class="results-meta" id="resultsMeta">
+                    <span id="resultsCount">0 targets found</span>
+                    <button class="cyber-btn ghost small" id="exportBtn" style="display:none">
+                        <i class="fa-solid fa-file-export"></i> EXPORT CSV
+                    </button>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="progress-wrap" id="progressWrap" style="display:none">
+                <div class="progress-bar" id="progressBar"></div>
+                <span class="progress-label" id="progressLabel">Scanning...</span>
+            </div>
+
+            <div class="panel-body" id="resultsBody">
+                <!-- Empty state -->
+                <div class="empty-state" id="emptyState">
+                    <div class="empty-icon">
+                        <i class="fa-solid fa-satellite-dish"></i>
+                    </div>
+                    <p class="empty-title">NO SCAN INITIATED</p>
+                    <p class="empty-sub">Configure your search parameters above and click INITIATE SCAN — or try DEMO MODE to preview the interface.</p>
+                </div>
+
+                <!-- Results table -->
+                <div class="table-wrap" id="tableWrap" style="display:none">
+                    <table class="results-table" id="resultsTable">
+                        <thead>
+                            <tr>
+                                <th>SCORE</th>
+                                <th>BUSINESS</th>
+                                <th>TYPE</th>
+                                <th>RATING</th>
+                                <th>REVIEWS</th>
+                                <th>WEBSITE</th>
+                                <th>FLAGS</th>
+                                <th>ACTION</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultsTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Detail Modal -->
+        <div class="modal-backdrop" id="modalBackdrop">
+            <div class="detail-modal" id="detailModal">
+                <button class="modal-close" id="modalClose"><i class="fa-solid fa-xmark"></i></button>
+                <div class="modal-header">
+                    <div class="modal-score-badge" id="modalScore">--</div>
+                    <div>
+                        <h3 class="modal-business-name" id="modalName">Business Name</h3>
+                        <p class="modal-address" id="modalAddress">Address</p>
+                    </div>
+                </div>
+                <div class="modal-body" id="modalBody">
+                    <!-- Populated by JS -->
+                </div>
+                <div class="modal-footer">
+                    <a href="#" id="modalMapsLink" target="_blank" class="cyber-btn ghost small">
+                        <i class="fa-solid fa-map-location-dot"></i> VIEW ON MAPS
+                    </a>
+                    <a href="#" id="modalWebsiteLink" target="_blank" class="cyber-btn ghost small">
+                        <i class="fa-solid fa-globe"></i> VISIT WEBSITE
+                    </a>
+                    <button class="cyber-btn primary small" id="modalContactBtn">
+                        <i class="fa-solid fa-paper-plane"></i> MARK AS PROSPECT
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <span>FLECHA WEB DESIGN</span>
+        <span class="footer-sep">//</span>
+        <span>LEAD FINDER v1.0</span>
+        <span class="footer-sep">//</span>
+        <span>FOR INTERNAL USE</span>
+    </footer>
+
+    <script src="Business_Finder.js"></script>
+</body>
+</html>

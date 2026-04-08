@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flecha Web Design</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black:         #000000;
+            --purple:        #8b00ff;
+            --purple-mid:    #a020f0;
+            --purple-bright: #bf5fff;
+            --purple-glow:   #d4a5ff;
+            --border:        #2a2a45;
+            --border-bright: #4a3a7a;
+            --text-white:    #ffffff;
+            --text-light:    #d0c8e8;
+            --text-mid:      #8880a8;
+            --glow-sm: 0 0 8px rgba(139,0,255,0.5);
+            --glow-md: 0 0 15px rgba(139,0,255,0.6), 0 0 30px rgba(139,0,255,0.3);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--black);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        canvas#bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            opacity: 0.3;
+        }
+
+        .hub {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3rem;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .brand img {
+            height: 52px;
+            filter: drop-shadow(0 0 12px rgba(139,0,255,0.8));
+        }
+
+        .brand img.flip { transform: scaleX(-1); opacity: 0.65; }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1;
+            gap: 4px;
+        }
+
+        .brand-main {
+            font-family: 'Orbitron', monospace;
+            font-weight: 900;
+            font-size: 2rem;
+            color: var(--text-white);
+            letter-spacing: 0.25em;
+            text-shadow: var(--glow-md);
+        }
+
+        .brand-sub {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 0.45em;
+            color: var(--purple-glow);
+            text-transform: uppercase;
+        }
+
+        .hub-divider {
+            width: 200px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--purple-bright), transparent);
+        }
+
+        .nav-cards {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-card {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.8rem;
+            padding: 1.8rem 2rem;
+            min-width: 240px;
+            background: rgba(15,10,25,0.92);
+            border: 1px solid var(--border-bright);
+            border-radius: 4px;
+            text-decoration: none;
+            color: var(--text-light);
+            transition: all 0.25s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 3px; height: 100%;
+            background: linear-gradient(180deg, var(--purple), var(--purple-bright));
+        }
+
+        .nav-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at top left, rgba(139,0,255,0.08), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.25s;
+        }
+
+        .nav-card:hover {
+            border-color: var(--purple-bright);
+            box-shadow: var(--glow-md);
+            transform: translateY(-3px);
+        }
+
+        .nav-card:hover::after { opacity: 1; }
+
+        .card-tag {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.15em;
+            color: var(--purple-bright);
+        }
+
+        .card-title {
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 0.12em;
+            color: var(--text-white);
+        }
+
+        .card-desc {
+            font-size: 0.83rem;
+            color: var(--text-mid);
+            line-height: 1.5;
+        }
+
+        .card-arrow {
+            margin-top: 0.4rem;
+            font-size: 0.78rem;
+            color: var(--purple-glow);
+            letter-spacing: 0.1em;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        footer {
+            position: relative;
+            z-index: 10;
+            margin-top: 1rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.62rem;
+            letter-spacing: 0.2em;
+            color: #33304a;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="bg"></canvas>
+
+    <div class="hub">
+        <div class="brand">
+            <img src="flecha-web-design-logo.png" alt="Flecha">
+            <div class="brand-text">
+                <span class="brand-main">FLECHA</span>
+                <span class="brand-sub">Web Design</span>
+            </div>
+            <img src="flecha-web-design-logo.png" alt="" class="flip">
+        </div>
+
+        <div class="hub-divider"></div>
+
+        <div class="nav-cards">
+            <a href="Business_Portfolio.html" class="nav-card">
+                <span class="card-tag">// 01 — MAIN SITE</span>
+                <span class="card-title">PORTFOLIO</span>
+                <p class="card-desc">Our public-facing website. Services, process, work samples, and contact.</p>
+                <span class="card-arrow">ENTER →</span>
+            </a>
+            <a href="Business_Finder.html" class="nav-card">
+                <span class="card-tag">// 02 — INTERNAL TOOL</span>
+                <span class="card-title">LEAD FINDER</span>
+                <p class="card-desc">Scan local businesses and score them as candidates for a new or refreshed website.</p>
+                <span class="card-arrow">LAUNCH →</span>
+            </a>
+        </div>
+    </div>
+
+    <footer>FLECHA WEB DESIGN // INTERNAL HUB // 2026</footer>
+
+    <script>
+        const canvas = document.getElementById('bg');
+        const ctx    = canvas.getContext('2d');
+        let w, h, off = 0;
+
+        function resize() {
+            w = canvas.width  = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        function draw() {
+            ctx.clearRect(0, 0, w, h);
+            const sz  = 55;
+            const dim = 'rgba(139,0,255,0.1)';
+            ctx.strokeStyle = dim;
+            ctx.lineWidth   = 0.5;
+
+            for (let x = 0; x <= w; x += sz) {
+                ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+            }
+            for (let y = off % sz; y <= h; y += sz) {
+                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+            }
+
+            off += 0.25;
+            requestAnimationFrame(draw);
+        }
+        draw();
+    </script>
+</body>
+</html>
